@@ -22,6 +22,9 @@ export enum ErrorCode {
   Unprocesssale = 422,
   InterNal_Exception = 500,
   Unauthorizes = 401,
-  Productnot = 404
+  Productnot = 404,
+  Adress_Not_Found = 1004,
+  Adrss_Does_Not_Belog_To_User = 1005,
+  PRODUCTNOTFOUND = 1006
 
 }

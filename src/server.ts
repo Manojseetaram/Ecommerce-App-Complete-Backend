@@ -4,6 +4,7 @@ import rootRouter from "./routes/index"; // Corrected import
 import { errorMiddleware } from "./middleware/error";
 import { PrismaClient, Prisma } from "@prisma/client"; // Import Prisma types
 import { signUpSchema } from "./schema/users";
+import { compare } from "bcrypt";
 
 dotenv.config();
 
@@ -18,15 +19,32 @@ app.use("/api", rootRouter);
 export const prismaClient = new PrismaClient({
   log: ["query"],
 }).$extends({
-  query: {
-    user: {
-      create({ args, query }: { args: Prisma.UserCreateArgs; query: (args: Prisma.UserCreateArgs) => any }) {
-        const parsedData = signUpSchema.parse(args.data);
-        args.data = parsedData as typeof args.data;
-        return query(args);
-      },
-    },
-  },
+  result :{
+    address :{
+      formattedAddress :{
+        needs :{
+            street : true,
+            city : true ,
+            state : true,
+            country : true,
+            pipCode :true
+            
+        },
+        compute : (addr: any) =>{
+          return `${addr.street} , ${addr.city} , ${addr.state} ,${addr.country} -${addr.pipCode}`
+        }
+      }
+    }
+  }
+  // query: {
+  //   user: {
+  //     create({ args, query }: { args: Prisma.UserCreateArgs; query: (args: Prisma.UserCreateArgs) => any }) {
+  //       const parsedData = signUpSchema.parse(args.data);
+  //       args.data = parsedData as typeof args.data;
+  //       return query(args);
+  //     },
+  //   },
+  // },
 });
 
 app.use(errorMiddleware);

@@ -1,11 +1,12 @@
-import { addAddres, deleteAddres, listAddres } from "../controllers/users";
+import {  addAddress, deleteAddress, listAddress, updateUser } from "../controllers/users";
 import { errorHandler } from "../error";
 import { Router } from "express";
 const userRouter = Router()
-userRouter.post("/adress",errorHandler(addAddres))
-userRouter.delete("/adress : id",errorHandler(deleteAddres))
+userRouter.post("/adress",errorHandler(addAddress))
+userRouter.delete("/adress : id",errorHandler(deleteAddress))
 
-userRouter.get("/adress" , errorHandler(listAddres))
+userRouter.get("/adress" , errorHandler(listAddress));
+userRouter.put("/",errorHandler(updateUser));
 
 
 export default userRouter;

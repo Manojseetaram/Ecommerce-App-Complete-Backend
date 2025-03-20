@@ -6,8 +6,8 @@ import authMiddleware from "../middleware/auth";
 
 const authRoutes : Router = Router();
 
-authRoutes.post("/signup",[authMiddleware],errorHandler (signup))
-authRoutes.post("/signin",[authMiddleware],errorHandler (signin))
+authRoutes.post("/signup",errorHandler (signup))
+authRoutes.post("/signin",errorHandler (signin))
 authRoutes.get("/me",[authMiddleware],errorHandler(me))
 
 export default authRoutes;

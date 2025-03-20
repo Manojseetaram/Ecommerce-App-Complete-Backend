@@ -25,6 +25,7 @@ export enum ErrorCode {
   Productnot = 404,
   Adress_Not_Found = 1004,
   Adrss_Does_Not_Belog_To_User = 1005,
-  PRODUCTNOTFOUND = 1006
+  PRODUCTNOTFOUND = 1006,
+  OREDRNOTFOUND = 1007
 
 }

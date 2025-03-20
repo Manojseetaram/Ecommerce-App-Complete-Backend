@@ -10,6 +10,7 @@ const productsRoutes: Router = Router()
 productsRoutes.post("/", errorHandler(createProduct));
 
 
+
 productsRoutes.put("/:id",errorHandler(updateProduct) )
 productsRoutes.delete("/:id",errorHandler(deleteProduct) )
 productsRoutes.get("/",errorHandler(listProducts) )

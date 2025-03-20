@@ -16,16 +16,45 @@ enum Role {
   ADMIN 
   USER
 }
+enum OrderEventStatus {
+  PENDING
+  COMPLETED 
+  CANCELLED
+  DELIVERED
+  OUT_FOR_DELIVERY
+}
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role Role @default(USER)
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  email                 String   @unique
+  password              String
+  role                  Role     @default(USER)
+  defaultShippingAddress Int?
+  defaultBillingAddress  Int?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-    addresses Adress[]
-  @@map("user") // Ensure Prisma maps to the correct table name
+
+  addresses Address[] // Changed `adress` to `addresses`
+cartItems CartItem[]
+orderItems Order[]
+  @@map("user") // Ensures Prisma maps correctly to the `user` table
+}
+
+model Address { // Changed `Adress` to `Address`
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  street    String
+  city      String
+  state     String
+  country   String
+  pipCode   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("address") // Ensures Prisma maps correctly to the `address` table
 }
 
 model Product {
@@ -36,23 +65,60 @@ model Product {
  tags String
  createdAt DateTime @default(now())
  updatedAt DateTime @updatedAt
+  cartItems CartItem[]
 
-
+  
+orderProducts OrderProduct[]
  @@map("products")
 
 
 }
-model Adress {
-  id Int@id @default(autoincrement())
-  lineOne String
-  lineTwo String
-  city String
-  state String
-  country String
-  pincode String
+model CartItem {
+  id Int @id @default(autoincrement())
   userId Int
-  user User @relation(fields :[userId] , references: [id])
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId Int 
+  quntity Int
+  product   Product  @relation(fields: [productId],references: [id] , onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  @@map("addresses")
+    @@map("cartItems")
 }
+ model Order {
+   id Int @id @default(autoincrement())
+   userId Int
+   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+   netAmount String
+   adress    String
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+   orderProducts OrderProduct[]
+   orderEvents OrderEvent[]
+   @@map("orders")
+
+ }
+
+  model OrderProduct {
+   id Int @id @default(autoincrement())
+   orderId Int
+   order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+   productId Int
+   product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+   quantiy  Int
+   adress    String
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+   @@map("orderProducts")
+
+ }
+
+
+  model OrderEvent {
+    Id Int @id @default(autoincrement())
+    orderId Int 
+    order Order @relation(fields: [orderId], references: [id], onDelete:Cascade)
+    status OrderEventStatus @default(PENDING)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@map("orderEvents")
+  }

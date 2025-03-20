@@ -2,12 +2,12 @@ import { Router } from "express";
 import {signup , me} from "../controllers/auth"
 import {signin} from "../controllers/auth"
 import { errorHandler } from "../error";
-import { Authmiddelware } from "../middleware/auth";
+import authMiddleware from "../middleware/auth";
 
 const authRoutes : Router = Router();
 
-authRoutes.post("/signup",errorHandler (signup))
-authRoutes.post("/signin",errorHandler (signin))
-authRoutes.get("/me",[Authmiddelware],errorHandler(me))
+authRoutes.post("/signup",[authMiddleware],errorHandler (signup))
+authRoutes.post("/signin",[authMiddleware],errorHandler (signin))
+authRoutes.get("/me",[authMiddleware],errorHandler(me))
 
 export default authRoutes;

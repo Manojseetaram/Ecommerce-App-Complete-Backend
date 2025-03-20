@@ -11,7 +11,7 @@ export const AddressSchema = z.object({
     city: z.string(),
     state: z.string(),
     country: z.string(),
-    pinCode: z.string().length(6, "Pincode must be 6 digits"), // Fixed typo
+    pipCode: z.string().length(6, "Pincode must be 6 digits"), // Fixed typo
 });
 
 export const UpdateUserSchema = z.object({

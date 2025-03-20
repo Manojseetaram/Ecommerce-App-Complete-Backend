@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -53,7 +54,7 @@ model Address { // Changed `Adress` to `Address`
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+ 
   @@map("address") // Ensures Prisma maps correctly to the `address` table
 }
 
@@ -69,6 +70,8 @@ model Product {
 
   
 orderProducts OrderProduct[]
+
+
  @@map("products")
 
 
@@ -91,6 +94,7 @@ model CartItem {
    netAmount String
    adress    String
    createdAt DateTime @default(now())
+   status  OrderEventStatus @default(PENDING)
    updatedAt DateTime @updatedAt
    orderProducts OrderProduct[]
    orderEvents OrderEvent[]
